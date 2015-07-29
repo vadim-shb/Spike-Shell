@@ -12,7 +12,7 @@ public class Cd {
         String where = args[args.length - 1];
         try {
             Path destination = CurrentPath.getExistRelatedPath(where);
-            CurrentPath.setCurrentPath(destination);
+            CurrentPath.setCurrentPath(destination.normalize());
         } catch (PathNotFound pathNotFound) {
             out.println("Path not exists");
         }

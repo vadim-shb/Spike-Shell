@@ -6,9 +6,13 @@ Supports commands:
 - exit
 - ls (with -l and -a keys only)
 - cd
+- mkdir
+- cp
+- mv
+- rm
 
 ##Goals:
-- play with java IO/NIO API.
+- play with java IO/NIO file API.
 
 ##Not goals:
 - Stability

@@ -19,7 +19,7 @@ public class Cp {
         try {
             from = CurrentPath.getExistRelatedPath(args[0]);
         } catch (PathNotFound pathNotFound) {
-            out.format("File %s not exist%n", args[0]);
+            out.format("Destination %s not exist%n", args[0]);
             return;
         }
         Path to = CurrentPath.getRelatedPath(args[1]);

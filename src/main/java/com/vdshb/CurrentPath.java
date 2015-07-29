@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.lang.System.out;
-
 public class CurrentPath {
     private static Path currentPath = Paths.get("/");
 
@@ -23,19 +21,23 @@ public class CurrentPath {
         CurrentPath.currentPath = path;
     }
 
-    public static Path getRelatedPath(String path) throws PathNotFound {
-        Path destination;
-
-        if (path.startsWith("/")) {
-            destination = Paths.get(path);
-        } else {
-            destination = currentPath.resolve(path);
-        }
+    public static Path getExistRelatedPath(String path) throws PathNotFound {
+        Path destination = getRelatedPath(path);
 
         if (Files.exists(destination)) {
             return destination;
         } else {
             throw new PathNotFound();
         }
+    }
+
+    public static Path getRelatedPath(String path) {
+
+        if (path.startsWith("/")) {
+            return Paths.get(path);
+        } else {
+            return currentPath.resolve(path);
+        }
+
     }
 }

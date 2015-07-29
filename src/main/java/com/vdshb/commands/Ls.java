@@ -61,7 +61,7 @@ public class Ls {
         if (where.startsWith("-")) {
             path = CurrentPath.getCurrentPath();
         } else {
-            path = CurrentPath.getRelatedPath(where);
+            path = CurrentPath.getExistRelatedPath(where);
         }
     }
 

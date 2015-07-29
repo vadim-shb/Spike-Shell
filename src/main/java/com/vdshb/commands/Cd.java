@@ -11,7 +11,7 @@ public class Cd {
     public static void cd(String[] args) {
         String where = args[args.length - 1];
         try {
-            Path destination = CurrentPath.getRelatedPath(where);
+            Path destination = CurrentPath.getExistRelatedPath(where);
             CurrentPath.setCurrentPath(destination);
         } catch (PathNotFound pathNotFound) {
             out.println("Path not exists");

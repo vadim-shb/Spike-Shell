@@ -7,6 +7,7 @@ import static com.vdshb.commands.Cp.cp;
 import static com.vdshb.commands.Echo.echo;
 import static com.vdshb.commands.Exit.exit;
 import static com.vdshb.commands.Ls.ls;
+import static com.vdshb.commands.Mkdir.mkdir;
 import static com.vdshb.commands.Mv.mv;
 import static com.vdshb.commands.Rm.rm;
 import static java.lang.System.out;
@@ -32,6 +33,9 @@ public class CommandLoop {
                     break;
                 case "cd":
                     cd(args);
+                    break;
+                case "mkdir":
+                    mkdir(args);
                     break;
                 case "cp":
                     cp(args);

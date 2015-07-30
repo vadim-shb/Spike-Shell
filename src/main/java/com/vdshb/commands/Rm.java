@@ -15,6 +15,10 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class Rm {
     public static void rm(String[] args) {
+        if (args.length < 1) {
+            out.println("Incorrect command parameters.");
+            return;
+        }
         Path target;
         try {
             target = CurrentPath.getExistRelatedPath(args[0]);

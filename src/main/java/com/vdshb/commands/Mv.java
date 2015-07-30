@@ -11,6 +11,10 @@ import static java.lang.System.out;
 
 public class Mv {
     public static void mv(String[] args) {
+        if (args.length < 2) {
+            out.println("Incorrect command parameters.");
+            return;
+        }
         Path from;
         try {
             from = CurrentPath.getExistRelatedPath(args[0]);

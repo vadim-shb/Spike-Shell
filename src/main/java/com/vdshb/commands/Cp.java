@@ -15,6 +15,11 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class Cp {
     public static void cp(String[] args) {
+        if (args.length < 2) {
+            out.println("Incorrect command parameters.");
+            return;
+        }
+
         Path from;
         try {
             from = CurrentPath.getExistRelatedPath(args[0]);

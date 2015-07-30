@@ -10,6 +10,10 @@ import static java.lang.System.out;
 
 public class Mkdir {
     public static void mkdir(String[] args) {
+        if (args.length < 1) {
+            out.println("Incorrect command parameters.");
+            return;
+        }
         Path dirToCreate = CurrentPath.getRelatedPath(args[0]);
         try {
             Files.createDirectory(dirToCreate);

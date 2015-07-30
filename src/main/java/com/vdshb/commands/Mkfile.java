@@ -14,7 +14,10 @@ public class Mkfile {
 
     public static void mkfile(String[] args) {
         Path newFilePath = CurrentPath.getRelatedPath(args[0]);
-
+        if (args.length < 2) {
+            out.println("Incorrect command parameters.");
+            return;
+        }
         try (BufferedWriter writer = Files.newBufferedWriter(newFilePath, StandardCharsets.UTF_8)) {
             for (int i = 1; i < args.length - 1; i++)
                 writer.write(args[i] + " ");

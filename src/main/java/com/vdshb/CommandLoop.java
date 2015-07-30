@@ -2,6 +2,7 @@ package com.vdshb;
 
 import java.util.Arrays;
 
+import static com.vdshb.commands.Cat.cat;
 import static com.vdshb.commands.Cd.cd;
 import static com.vdshb.commands.Cp.cp;
 import static com.vdshb.commands.Echo.echo;
@@ -50,6 +51,9 @@ public class CommandLoop {
                     break;
                 case "mkfile":
                     mkfile(args);
+                    break;
+                case "cat":
+                    cat(args);
                     break;
                 case "tail":
                     tail(args);

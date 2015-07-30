@@ -8,8 +8,10 @@ import static com.vdshb.commands.Echo.echo;
 import static com.vdshb.commands.Exit.exit;
 import static com.vdshb.commands.Ls.ls;
 import static com.vdshb.commands.Mkdir.mkdir;
+import static com.vdshb.commands.Mkfile.mkfile;
 import static com.vdshb.commands.Mv.mv;
 import static com.vdshb.commands.Rm.rm;
+import static com.vdshb.commands.Tail.tail;
 import static java.lang.System.out;
 
 public class CommandLoop {
@@ -45,6 +47,12 @@ public class CommandLoop {
                     break;
                 case "mv":
                     mv(args);
+                    break;
+                case "mkfile":
+                    mkfile(args);
+                    break;
+                case "tail":
+                    tail(args);
                     break;
 
             }

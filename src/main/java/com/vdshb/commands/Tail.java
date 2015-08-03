@@ -1,12 +1,12 @@
 package com.vdshb.commands;
 
 import com.vdshb.CurrentPath;
+import com.vdshb.exceptions.WrongParamsException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +14,61 @@ import static java.lang.System.out;
 
 public class Tail {
 
+    private static int tailLinesNumber;
+    private static boolean followFlag;
+    private static Path filePath;
+
     public static void tail(String[] args) {
-        if (args.length < 1) {
-            out.println("Incorrect command parameters.");
+        try {
+            setParams(args);
+        } catch (WrongParamsException e) {
             return;
         }
-        int tailLinesNumber;
-        if (args.length > 1) {
-            tailLinesNumber = Integer.valueOf(args[1]);
-        } else {
-            tailLinesNumber = 10;
-        }
-        Path filePath = CurrentPath.getRelatedPath(args[0]);
         tail(filePath, tailLinesNumber);
+        if (followFlag) {
+            watchAndRetail();
+        }
+    }
+
+    private static void setParams(String[] args) throws WrongParamsException {
+        if (args.length < 1) {
+            out.println("Incorrect command parameters.");
+            throw new WrongParamsException();
+        }
+        setTailLinesNumberParam(args);
+        setFollowFlagParam(args);
+        setPathParam(args);
+    }
+
+    private static void setTailLinesNumberParam(String[] args) throws WrongParamsException {
+        tailLinesNumber = 10;
+        for (int i = 0; i < args.length - 1; i++) {
+            if ("-n".equals(args[i])) {
+                try {
+                    tailLinesNumber = Integer.valueOf(args[i + 1]);
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    out.println("Wrong number of lines");
+                    throw new WrongParamsException();
+                }
+            }
+        }
+    }
+
+    private static void setFollowFlagParam(String[] args) throws WrongParamsException {
+        followFlag = false;
+        for (int i = 0; i < args.length - 1; i++) {
+            if ("-f".equals(args[i])) {
+                followFlag = true;
+            }
+        }
+    }
+
+    private static void setPathParam(String[] args) throws WrongParamsException {
+        filePath = CurrentPath.getRelatedPath(args[args.length - 1]);
+        if (!Files.exists(filePath)) {
+            out.println("File not exists");
+            throw new WrongParamsException();
+        }
     }
 
     private static void tail(Path fileToRead, int tailLinesNumber) {
@@ -85,6 +127,33 @@ public class Tail {
             }
         }
 
+
+    }
+
+    private static void watchAndRetail() {
+        try {
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            WatchKey watchKey = filePath.getParent().register(watchService, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.OVERFLOW, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_CREATE);
+            for (; ; ) {
+                for (WatchEvent<?> event : watchKey.pollEvents()) {
+
+                    WatchEvent.Kind<?> kind = event.kind();
+                    if (kind == StandardWatchEventKinds.ENTRY_MODIFY || kind == StandardWatchEventKinds.OVERFLOW || kind == StandardWatchEventKinds.ENTRY_DELETE || kind == StandardWatchEventKinds.ENTRY_CREATE) {
+                        WatchEvent<Path> ev = (WatchEvent<Path>) event;
+                        Path changedFile = ev.context();
+                        if (filePath.endsWith(changedFile)) {
+                            out.println("================================================ file modified ================================================");
+                            tail(filePath, tailLinesNumber);
+                        }
+                    }
+                }
+//                int inputChar = System.in.read();
+//                if (inputChar == 'q')
+//                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 //
 //    private static void tail(Path fileToRead, int tailLinesNumber) {

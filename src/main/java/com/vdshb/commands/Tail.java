@@ -26,7 +26,7 @@ public class Tail {
         }
         tail(filePath, tailLinesNumber);
         if (followFlag) {
-            watchAndRetail();
+            tailWatch();
         }
     }
 
@@ -74,7 +74,7 @@ public class Tail {
     private static void tail(Path fileToRead, int tailLinesNumber) {
         StringVault tail = new StringVault(tailLinesNumber);
         try (BufferedReader reader = Files.newBufferedReader(fileToRead, StandardCharsets.UTF_8)) {
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null)
                 tail.addString(line);
             for (String tailLine : tail.getStrings())
@@ -131,7 +131,7 @@ public class Tail {
     }
 
     private static boolean watchFlag;
-    private static void watchAndRetail() {
+    private static void tailWatch() {
         try {
             watchFlag = true;
             new Thread(()->{

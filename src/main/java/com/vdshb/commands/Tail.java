@@ -3,12 +3,13 @@ package com.vdshb.commands;
 import com.vdshb.CurrentPath;
 import com.vdshb.exceptions.WrongParamsException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.System.out;
 
@@ -24,7 +25,7 @@ public class Tail {
         } catch (WrongParamsException e) {
             return;
         }
-        tail(filePath, tailLinesNumber);
+        tail();
         if (followFlag) {
             tailWatch();
         }
@@ -71,70 +72,12 @@ public class Tail {
         }
     }
 
-    private static void tail(Path fileToRead, int tailLinesNumber) {
-        StringVault tail = new StringVault(tailLinesNumber);
-        try (BufferedReader reader = Files.newBufferedReader(fileToRead, StandardCharsets.UTF_8)) {
-            String line;
-            while ((line = reader.readLine()) != null)
-                tail.addString(line);
-            for (String tailLine : tail.getStrings())
-                out.println(tailLine);
-        } catch (IOException e) {
-            out.println("Can not read file");
-        } catch (IllegalArgumentException ex) {
-            out.println("Illegal lines number");
-        }
-    }
-
-    private static class StringVault {
-        private final String[] strings;
-        private int pointer = -1;
-        private int capacity = 0;
-        private boolean round = false;
-
-        public StringVault(int vaultCapacity) {
-            if (vaultCapacity < 1) throw new IllegalArgumentException();
-            this.strings = new String[vaultCapacity];
-            this.capacity = vaultCapacity;
-        }
-
-        public void addString(String str) {
-            incrementPointer();
-            strings[pointer] = str;
-        }
-
-        public List<String> getStrings() {
-            List<String> retval = new ArrayList<>(capacity);
-            if (round) {
-                for (int i = 0; i < capacity; i++) {
-                    incrementPointer();
-                    retval.add(strings[pointer]);
-                }
-
-            } else {
-                for (int i = 0; i <= pointer; i++) {
-                    retval.add(strings[i]);
-                }
-            }
-            return retval;
-        }
-
-        private void incrementPointer() {
-            pointer++;
-            if (pointer == capacity) {
-                pointer = 0;
-                round = true;
-            }
-        }
-
-
-    }
-
     private static boolean watchFlag;
+
     private static void tailWatch() {
         try {
             watchFlag = true;
-            new Thread(()->{
+            new Thread(() -> {
                 int inputChar = 0;
                 try {
                     inputChar = System.in.read();
@@ -156,9 +99,8 @@ public class Tail {
                         WatchEvent<Path> ev = (WatchEvent<Path>) event;
                         Path changedFile = ev.context();
                         if (filePath.endsWith(changedFile)) {
-                            out.println();
                             out.println("================================================ file modified ================================================");
-                            tail(filePath, tailLinesNumber);
+                            tail();
                         }
                     }
                 }
@@ -167,24 +109,100 @@ public class Tail {
             e.printStackTrace();
         }
     }
-//
-//    private static void tail(Path fileToRead, int tailLinesNumber) {
-//        ByteBuffer buffer = ByteBuffer.allocate(200);
-//        CharBuffer charBuffer;
-//        Charset charSet = StandardCharsets.UTF_8;
-//        try(FileChannel fc = FileChannel.open(fileToRead, StandardOpenOption.READ)){
-//            long position=0;
-//            fc.position(position);
-//            fc.read(buffer);
-//            buffer.flip();
-//            charBuffer = charSet.decode(buffer);
-//            out.println(charBuffer.toString());
-//
-//        } catch (IOException e) {
-//            out.println("Can not read file");
-//        }
-//
-//
-//
-//    }
+
+    private static void tail() {
+        int READ_BLOCK_SIZE = 10; // can not be less than max UTF-8 char (7 bytes)
+
+
+        ByteBuffer buffer = ByteBuffer.allocate(READ_BLOCK_SIZE);
+        CharBuffer charBuffer;
+        Charset charSet = StandardCharsets.UTF_8;
+        try (FileChannel fc = FileChannel.open(filePath, StandardOpenOption.READ)) {
+            long fileSize = Files.size(filePath);
+            long position = findTailBeginPosition();
+            while (position <= fileSize) {
+
+                fc.position(position);
+                buffer.clear();
+                fc.read(buffer);
+
+                int foreignBytes = getForeignUtf8Bytes(buffer.array());
+
+                buffer.flip();
+                buffer.limit(buffer.limit() - foreignBytes);
+                charBuffer = charSet.decode(buffer);
+                out.print(charBuffer.toString());
+
+                position = position + READ_BLOCK_SIZE - foreignBytes;
+            }
+            out.println();
+
+        } catch (IOException e) {
+            out.println("Can not read file");
+        }
+
+    }
+
+    private static int getForeignUtf8Bytes(byte[] buffer) {
+        int additionalBytes = 0;
+        for (int i = buffer.length - 1; i >= 0; i--) {
+            if ((buffer[i] & 0x80) == 0)
+                return 0;
+            if ((buffer[i] & 0xC0) >>> 6 == 2) {
+                additionalBytes++;
+                continue;
+            }
+            if ((buffer[i] & 0xC0) >>> 6 == 3 && additionalBytesNumber(buffer[i]) > additionalBytes) {
+                return ++additionalBytes;
+            }
+            return 0;
+        }
+        return buffer.length;
+    }
+
+    private static int additionalBytesNumber(byte firstByteOfUtf8Char) { //does not check if it's not first utf-8 byte of char
+        if ((firstByteOfUtf8Char & 0x80) == 0) return 0;
+        if ((firstByteOfUtf8Char & 0x20) == 0) return 1;
+        if ((firstByteOfUtf8Char & 0x10) == 0) return 2;
+        if ((firstByteOfUtf8Char & 0x08) == 0) return 3;
+        if ((firstByteOfUtf8Char & 0x04) == 0) return 4;
+        if ((firstByteOfUtf8Char & 0x02) == 0) return 5;
+        return 6;
+    }
+
+
+    private static long findTailBeginPosition() throws IOException {
+        int READ_BLOCK_SIZE = 10;
+
+        ByteBuffer buffer = ByteBuffer.allocate(READ_BLOCK_SIZE);
+        try (FileChannel fc = FileChannel.open(filePath, StandardOpenOption.READ)) {
+            int enterCounter = 0;
+            int blockCounter = 0;
+            int positionOverflow = 0;
+            long fileSize = Files.size(filePath);
+            long position = fileSize;
+            while (position > 0) {
+                blockCounter++;
+                position = position - READ_BLOCK_SIZE;
+                if (position < 0) {
+                    positionOverflow = (int) -position;
+                    position = 0;
+                }
+                fc.position(position);
+                buffer.clear();
+                fc.read(buffer);
+                buffer.limit(buffer.limit()-positionOverflow);
+                for (int i = buffer.limit() - 1; i >= 0; i--) {
+                    if (buffer.get(i) == 10) {
+                        enterCounter++;
+                        if (enterCounter == tailLinesNumber) {
+                            return fileSize - (blockCounter * READ_BLOCK_SIZE) + i + positionOverflow + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
 }

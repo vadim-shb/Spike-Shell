@@ -130,11 +130,25 @@ public class Tail {
 
     }
 
+    private static boolean watchFlag;
     private static void watchAndRetail() {
         try {
+            watchFlag = true;
+            new Thread(()->{
+                int inputChar = 0;
+                try {
+                    inputChar = System.in.read();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+                if (inputChar == 'q')
+                    watchFlag = false;
+
+            }).start();
             WatchService watchService = FileSystems.getDefault().newWatchService();
             WatchKey watchKey = filePath.getParent().register(watchService, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.OVERFLOW, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_CREATE);
-            for (; ; ) {
+            while (watchFlag) {
                 for (WatchEvent<?> event : watchKey.pollEvents()) {
 
                     WatchEvent.Kind<?> kind = event.kind();
@@ -142,14 +156,12 @@ public class Tail {
                         WatchEvent<Path> ev = (WatchEvent<Path>) event;
                         Path changedFile = ev.context();
                         if (filePath.endsWith(changedFile)) {
+                            out.println();
                             out.println("================================================ file modified ================================================");
                             tail(filePath, tailLinesNumber);
                         }
                     }
                 }
-//                int inputChar = System.in.read();
-//                if (inputChar == 'q')
-//                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();

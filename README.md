@@ -7,7 +7,7 @@ Supports commands:
 - cp
 - echo
 - exit
-- ls (with -l and -a keys only)
+- ls 
 - mkdir
 - mv
 - rm
@@ -39,3 +39,5 @@ PARAMETERS:
 [-a] - list hidden files
 
 [-l] - show extended info about files
+##mkdir
+mkdir \<DIRECTORY_PATH\> - create directory on specified path

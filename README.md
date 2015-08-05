@@ -9,6 +9,7 @@ Supports commands:
 - exit
 - ls 
 - mkdir
+- mkfile
 - mv
 - rm
 
@@ -26,7 +27,7 @@ cat \<FILE_NAME\> - print _FILE_NAME_ on console.
 ##cd
 cd \<DIRECTORY_NAME\> - change current directory to _DIRECTORY_NAME_.
 ##cp
-cp \<FILE_OR_DIRECTORY_NAME\>  \<DESTINATION\> - copy file or directory in destination. Destination must contain name of copy file/directory (not just exist folder where you want to put your file).
+cp \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - copy _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to copy (not just exist folder where you want to put your file).
 ##echo
 echo \<SOME_TEXT\> - print text after echo to console.
 ##exit
@@ -44,3 +45,6 @@ mkdir \<DIRECTORY_PATH\> - create directory on specified path
 
 ##mkfile
 mkdir \<FILE_PATH\> [FILE_CONTENT] - create text file on specified path witch contain _FILE_CONTENT_ inside
+
+#mv 
+mv \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - move _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to move (not just exist folder where you want to put your file).

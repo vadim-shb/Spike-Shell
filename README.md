@@ -31,3 +31,11 @@ cp \<FILE_OR_DIRECTORY_NAME\>  \<DESTINATION\> - copy file or directory in desti
 echo \<SOME_TEXT\> - print text after echo to console.
 ##exit
 exit [EXIT_CODE]- exit with EXIT_CODE
+##ls
+ls [PARAMETERS] [DIRECTORY] - print information about files and folders contained in _DIRECTORY_. If _DIRECTORY_ not specified then _DIRECTORY_ is current directory.
+
+PARAMETERS:
+
+[-a] - list hidden files
+
+[-l] - show extended info about files

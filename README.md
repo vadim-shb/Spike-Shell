@@ -44,7 +44,7 @@ ls [PARAMETERS] [DIRECTORY] - print information about files and folders containe
 
 PARAMETERS:
 
-[-a] - list hidden files.
+[-a] - list hidden files,
 
 [-l] - show extended info about files.
 ##mkdir
@@ -64,6 +64,6 @@ tail [PARAMETERS] \<FILE_PATH\> - print last lines of text file (UTF-8 only).
 
 PARAMETERS:
 
-[-n \<LINES_NUMBER\>] - specify number of lines to print. If not specified - default number is 10.
+[-n \<LINES_NUMBER\>] - specify number of lines to print. If not specified - default number is 10,
 
 [-f] - follow changes on file. If file changed, tail will be printed again in real time. To exit this mode enter 'q'.

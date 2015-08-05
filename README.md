@@ -21,4 +21,5 @@ Supports commands:
  
 #Usage
 ##cat
-cat _FILE_NAME_ - writes file on console.
+cat _FILE_NAME_ - print _FILE_NAME_ on console.
+cd _DIRECTORY_NAME_ - change current directory to _DIRECTORY_NAME_.

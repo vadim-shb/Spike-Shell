@@ -37,21 +37,21 @@ cp \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - copy _FILE_OR_DIRECTORY_ i
 echo \<SOME_TEXT\> - print text after echo to console.
 
 ##exit
-exit [EXIT_CODE]- exit with EXIT_CODE
+exit [EXIT_CODE]- exit with EXIT_CODE.
 
 ##ls
 ls [PARAMETERS] [DIRECTORY] - print information about files and folders contained in _DIRECTORY_. If _DIRECTORY_ not specified then _DIRECTORY_ is current directory.
 
 PARAMETERS:
 
-[-a] - list hidden files
+[-a] - list hidden files.
 
-[-l] - show extended info about files
+[-l] - show extended info about files.
 ##mkdir
-mkdir \<DIRECTORY_PATH\> - create directory on specified path
+mkdir \<DIRECTORY_PATH\> - create directory on specified path.
 
 ##mkfile
-mkfile \<FILE_PATH\> \<FILE_CONTENT\> - create text file (UTF-8) on specified path witch contain _FILE_CONTENT_ inside
+mkfile \<FILE_PATH\> \<FILE_CONTENT\> - create text file (UTF-8) on specified path witch contain _FILE_CONTENT_ inside.
 
 ##mv 
 mv \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - move _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to move (not just exist folder where you want to put your file).
@@ -60,7 +60,7 @@ mv \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - move _FILE_OR_DIRECTORY_ i
 rm \<FILE_OR_DIRECTORY_PATH\> - remove file or directory. If directory not empty remove it recursively.
 
 ##tail
-tail [PARAMETERS] \<FILE_PATH\> - print last lines of text file (UTF-8 only) 
+tail [PARAMETERS] \<FILE_PATH\> - print last lines of text file (UTF-8 only).
 
 PARAMETERS:
 

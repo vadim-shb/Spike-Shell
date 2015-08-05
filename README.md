@@ -21,7 +21,7 @@ Supports commands:
  
 #Usage
 ##cat
-cat <FILE_NAME> - print _FILE_NAME_ on console.
+cat <<FILE_NAME>> - print _FILE_NAME_ on console.
 ##cd
 cd _DIRECTORY_NAME_ - change current directory to _DIRECTORY_NAME_.
 ##cp

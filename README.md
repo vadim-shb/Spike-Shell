@@ -12,6 +12,7 @@ Supports commands:
 - mkfile
 - mv
 - rm
+- tail
 
 ##Goals:
 - play with java IO/NIO file API.
@@ -44,7 +45,19 @@ PARAMETERS:
 mkdir \<DIRECTORY_PATH\> - create directory on specified path
 
 ##mkfile
-mkdir \<FILE_PATH\> [FILE_CONTENT] - create text file on specified path witch contain _FILE_CONTENT_ inside
+mkfile \<FILE_PATH\> [FILE_CONTENT] - create text file (UTF-8) on specified path witch contain _FILE_CONTENT_ inside
 
-#mv 
+##mv 
 mv \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - move _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to move (not just exist folder where you want to put your file).
+
+##rm
+rm \<FILE_OR_DIRECTORY_PATH\> - remove file or directory. If directory not empty remove it recursively.
+
+##tail
+tail [PARAMETERS] \<FILE_PATH\> - print last lines of text file (UTF-8 only) 
+
+PARAMETERS:
+
+[-n \<LINES_NUMBER\>] - specify number of lines to print. If not specified - default number is 10.
+
+[-f] - follow changes on file. If file changed, tail will be printed again in real time. To exit this mode enter 'q'.

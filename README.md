@@ -2,12 +2,13 @@
 
 Simple shell emulator on java.
 Supports commands:
+- cat
+- cd
+- cp
 - echo
 - exit
 - ls (with -l and -a keys only)
-- cd
 - mkdir
-- cp
 - mv
 - rm
 
@@ -21,8 +22,12 @@ Supports commands:
  
 #Usage
 ##cat
-cat _FILE_NAME_ - print _FILE_NAME_ on console.
+cat \<FILE_NAME\> - print _FILE_NAME_ on console.
 ##cd
-cd _DIRECTORY_NAME_ - change current directory to _DIRECTORY_NAME_.
+cd \<DIRECTORY_NAME\> - change current directory to _DIRECTORY_NAME_.
 ##cp
-cp _FILE_OR_DIRECTORY_NAME_  _DESTINATION_ - copy file or directory in destination. Destination must contain name of copy file/directory (not just exist folder where you want to put your file).
+cp \<FILE_OR_DIRECTORY_NAME\>  \<DESTINATION\> - copy file or directory in destination. Destination must contain name of copy file/directory (not just exist folder where you want to put your file).
+##echo
+echo \<SOME_TEXT\> - print text after echo to console.
+##exit
+exit [EXIT_CODE]- exit with EXIT_CODE

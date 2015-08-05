@@ -23,16 +23,22 @@ Supports commands:
 - Usefulness
  
 #Usage
+
 ##cat
 cat \<FILE_NAME\> - print _FILE_NAME_ content on console.
+
 ##cd
 cd \<DIRECTORY_NAME\> - change current directory to _DIRECTORY_NAME_.
+
 ##cp
 cp \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - copy _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to copy (not just exist folder where you want to put your file).
+
 ##echo
 echo \<SOME_TEXT\> - print text after echo to console.
+
 ##exit
 exit [EXIT_CODE]- exit with EXIT_CODE
+
 ##ls
 ls [PARAMETERS] [DIRECTORY] - print information about files and folders contained in _DIRECTORY_. If _DIRECTORY_ not specified then _DIRECTORY_ is current directory.
 
@@ -45,7 +51,7 @@ PARAMETERS:
 mkdir \<DIRECTORY_PATH\> - create directory on specified path
 
 ##mkfile
-mkfile \<FILE_PATH\> [FILE_CONTENT] - create text file (UTF-8) on specified path witch contain _FILE_CONTENT_ inside
+mkfile \<FILE_PATH\> \<FILE_CONTENT\> - create text file (UTF-8) on specified path witch contain _FILE_CONTENT_ inside
 
 ##mv 
 mv \<FILE_OR_DIRECTORY_PATH\>  \<DESTINATION_PATH\> - move _FILE_OR_DIRECTORY_ into _DESTINATION_. _DESTINATION_ must contain name of file/directory to move (not just exist folder where you want to put your file).

@@ -18,3 +18,7 @@ Supports commands:
 - Stability
 - Tests
 - Usefulness
+ 
+#Usage
+##cat
+cat _FILE_NAME_ - writes file on console.

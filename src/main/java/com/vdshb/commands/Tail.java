@@ -18,6 +18,7 @@ public class Tail {
     private static int tailLinesNumber;
     private static boolean followFlag;
     private static Path filePath;
+    private static boolean watchFlag;
 
     public static void tail(String[] args) {
         try {
@@ -72,7 +73,6 @@ public class Tail {
         }
     }
 
-    private static boolean watchFlag;
 
     private static void tailWatch() {
         try {
@@ -111,7 +111,7 @@ public class Tail {
     }
 
     private static void tail() {
-        int READ_BLOCK_SIZE = 10; // can not be less than max UTF-8 char (7 bytes)
+        int READ_BLOCK_SIZE = 100; // can not be less than max UTF-8 char (7 bytes)
 
 
         ByteBuffer buffer = ByteBuffer.allocate(READ_BLOCK_SIZE);
@@ -172,7 +172,7 @@ public class Tail {
 
 
     private static long findTailBeginPosition() throws IOException {
-        int READ_BLOCK_SIZE = 10;
+        int READ_BLOCK_SIZE = 100;
 
         ByteBuffer buffer = ByteBuffer.allocate(READ_BLOCK_SIZE);
         try (FileChannel fc = FileChannel.open(filePath, StandardOpenOption.READ)) {

@@ -41,3 +41,6 @@ PARAMETERS:
 [-l] - show extended info about files
 ##mkdir
 mkdir \<DIRECTORY_PATH\> - create directory on specified path
+
+##mkfile
+mkdir \<FILE_PATH\> [FILE_CONTENT] - create text file on specified path witch contain _FILE_CONTENT_ inside

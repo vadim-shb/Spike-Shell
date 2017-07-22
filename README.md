@@ -14,15 +14,15 @@ Supports commands:
 - rm
 - tail
 
-##Goals:
+## Goals:
 - play with java IO/NIO file API.
 
-##Not goals:
+## Not goals:
 - Stability
 - Tests
 - Usefulness
  
-#Usage
+# Usage
 
 ## cat
 cat \<FILE_NAME\> - print _FILE_NAME_ content on console.
